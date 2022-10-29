@@ -2,6 +2,7 @@ using ComponentsAndTags;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 namespace AuthoringAndMono
 {
@@ -10,6 +11,7 @@ namespace AuthoringAndMono
         public float2 fieldDimensions;
         public int numberTombstonesToSpawn;
         public GameObject tombstonePrefab;
+        public uint randomSeed;
     }
 
     public class GraveyardBaker : Baker<GraveyardMono>
@@ -21,6 +23,10 @@ namespace AuthoringAndMono
                 FieldDimensions = authoring.fieldDimensions,
                 NumberTombstonesToSpawn = authoring.numberTombstonesToSpawn,
                 TombstonePrefab = GetEntity(authoring.tombstonePrefab)
+            });
+            AddComponent(new GraveyardRandom
+            {
+                Value = Random.CreateFromIndex(authoring.randomSeed)
             });
         }
     }
