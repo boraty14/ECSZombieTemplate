@@ -88,5 +88,7 @@ namespace ComponentsAndTags
         {
             return ZombieSpawnPoints[_graveyardRandom.ValueRW.Value.NextInt(0, ZombieSpawnPoints.Length)];
         }
+
+        public float3 Position => _transformAspect.Position;
     }
 }

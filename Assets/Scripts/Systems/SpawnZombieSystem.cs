@@ -1,4 +1,5 @@
 using ComponentsAndTags;
+using Helpers;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Transforms;
@@ -28,7 +29,7 @@ namespace Systems
             {
                 DeltaTime = dt,
                 ECB = ecbSingleton.CreateCommandBuffer(state.WorldUnmanaged)
-            }.Run();
+            }.Schedule();
         }
     }
 
@@ -38,6 +39,7 @@ namespace Systems
         public float DeltaTime;
         public EntityCommandBuffer ECB;
 
+        [BurstCompile]
         private void Execute(GraveyardAspect graveyard)
         {
             graveyard.ZombieSpawnTimer -= DeltaTime;
@@ -49,6 +51,9 @@ namespace Systems
 
             var newZombieTransform = graveyard.GetZombieSpawnPoint();
             ECB.SetComponent(newZombie,new LocalToWorldTransform{Value = newZombieTransform});
+
+            var zombieHeading = MathHelpers.GetHeading(newZombieTransform.Position, graveyard.Position);
+            ECB.SetComponent(newZombie,new ZombieHeading{Value = zombieHeading});
         }
     }
 }
