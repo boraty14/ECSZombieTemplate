@@ -1,3 +1,4 @@
+using Helpers;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -71,5 +72,21 @@ namespace ComponentsAndTags
         public float ZombieSpawnRate => _graveyardProperties.ValueRO.ZombieSpawnRate;
         
         public Entity ZombiePrefab => _graveyardProperties.ValueRO.ZombiePrefab;
+
+        public UniformScaleTransform GetZombieSpawnPoint()
+        {
+            var position = GetRandomZombieSpawnPoint();
+            return new UniformScaleTransform()
+            {
+                Position = position,
+                Rotation = quaternion.RotateY(MathHelpers.GetHeading(position, _transformAspect.Position)),
+                Scale = 1f
+            };
+        }
+
+        private float3 GetRandomZombieSpawnPoint()
+        {
+            return ZombieSpawnPoints[_graveyardRandom.ValueRW.Value.NextInt(0, ZombieSpawnPoints.Length)];
+        }
     }
 }

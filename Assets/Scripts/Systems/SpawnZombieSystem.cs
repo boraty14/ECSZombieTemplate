@@ -1,6 +1,7 @@
 using ComponentsAndTags;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Transforms;
 
 namespace Systems
 {
@@ -41,9 +42,13 @@ namespace Systems
         {
             graveyard.ZombieSpawnTimer -= DeltaTime;
             if (!graveyard.TimeToSpawnZombie) return;
+            if (graveyard.ZombieSpawnPoints.Length == 0) return;
 
             graveyard.ZombieSpawnTimer = graveyard.ZombieSpawnRate;
             var newZombie = ECB.Instantiate(graveyard.ZombiePrefab);
+
+            var newZombieTransform = graveyard.GetZombieSpawnPoint();
+            ECB.SetComponent(newZombie,new LocalToWorldTransform{Value = newZombieTransform});
         }
     }
 }
