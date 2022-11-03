@@ -51,6 +51,7 @@ namespace Systems
             if (zombie.IsInStoppingRange(float3.zero, BrainRadiusSq))
             {
                 ECB.SetComponentEnabled<ZombieWalkProperties>(sortKey,zombie.Entity,false);
+                ECB.SetComponentEnabled<ZombieEatProperties>(sortKey,zombie.Entity, true);
             }
         }
     }

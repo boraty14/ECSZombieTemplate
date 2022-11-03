@@ -27,6 +27,7 @@ namespace Systems
             {
                 ecb.RemoveComponent<NewZombieTag>(zombie.Entity);
                 ecb.SetComponentEnabled<ZombieWalkProperties>(zombie.Entity, false);
+                ecb.SetComponentEnabled<ZombieEatProperties>(zombie.Entity, false);
             }
             ecb.Playback(state.EntityManager);
         }

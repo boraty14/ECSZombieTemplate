@@ -469,6 +469,9 @@ MonoBehaviour:
   walkSpeed: 0.5
   walkAmplitude: 0.2
   walkFrequency: 1
+  eatDamage: 1
+  eatAmplitude: 0.2
+  eatFrequency: 10
 --- !u!1 &9044115827234658676
 GameObject:
   m_ObjectHideFlags: 0
