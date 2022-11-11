@@ -24,11 +24,21 @@ namespace ComponentsAndTags
             set => _zombieTimer.ValueRW.Value = value;
         }
 
-        public void Eat(float deltaTime)
+        public void Eat(float deltaTime, EntityCommandBuffer.ParallelWriter ecb, int sortKey, Entity brain)
         {
             ZombieTimer += deltaTime;
             var eatAngle = EatAmplitude * math.sin(EatFrequency * ZombieTimer);
-            _transformAspect.Rotation = quaternion.Euler(eatAngle,Heading,0);
+            _transformAspect.Rotation = quaternion.Euler(eatAngle, Heading, 0);
+
+            var eatDamage = EatDamagePerSecond * deltaTime;
+            var currentBrainDamage = new BrainDamageBufferElement {Value = eatDamage};
+            ecb.AppendToBuffer(sortKey,brain,currentBrainDamage);
+
+        }
+
+        public bool IsInEatingRange(float3 brainPosition,float brainRadiusSq)
+        {
+            return math.distancesq(brainPosition, _transformAspect.Position) <= brainRadiusSq - 1;
         }
 
     }
